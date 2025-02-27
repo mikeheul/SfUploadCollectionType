@@ -5,10 +5,11 @@ namespace App\Form;
 use App\Entity\Image;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class ImageType extends AbstractType
 {
@@ -42,7 +43,13 @@ class ImageType extends AbstractType
                 'row_attr' => [
                     'class' => 'mb-4',
                 ],
-            ]);
+            ])
+            // ->add('remove', CheckboxType::class, [
+            //     'label' => 'Supprimer cette image',
+            //     'required' => false,
+            //     'mapped' => false, // Pas de liaison à l'entité Image
+            // ])
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

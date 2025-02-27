@@ -27,6 +27,9 @@ class Image
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $creationDate = null;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $remove = false;
+
     public function __construct()
     {
         $this->creationDate = new \DateTime();
@@ -82,6 +85,17 @@ class Image
     {
         $this->creationDate = $creationDate;
 
+        return $this;
+    }
+
+    public function getRemove(): bool
+    {
+        return $this->remove;
+    }
+
+    public function setRemove(bool $remove): self
+    {
+        $this->remove = $remove;
         return $this;
     }
 }

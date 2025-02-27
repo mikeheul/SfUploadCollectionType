@@ -30,6 +30,7 @@ class OeuvreType extends AbstractType
                 'entry_type' => ImageType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
+                'allow_delete' => true,
                 'by_reference' => false,
                 'label' => false,
                 'constraints' => [new Valid()], // Permet la validation des sous-formulaires
