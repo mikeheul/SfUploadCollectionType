@@ -61,6 +61,9 @@
             let addImageButton = document.getElementById('add-image');
             let prototype = collectionHolder.dataset.prototype;
         
+            if (addImageButton.dataset.initialized) return;
+            addImageButton.dataset.initialized = "true"; 
+
             if (!prototype) {
                 console.error("Prototype non défini. Vérifiez que le formulaire contient bien un champ CollectionType.");
                 return;
