@@ -12,18 +12,31 @@
             </a>
         </div>
 
-        {# <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[150px]"> #}
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[150px] grid-auto-fill">
-            {% for oeuvre in oeuvres %}
-                {% set sizes = [
-                    'row-span-1 col-span-1', 
-                    'row-span-2 col-span-1', 
-                    'row-span-1 col-span-2', 
-                    'row-span-2 col-span-2'
-                ] %}
-                {% set size = sizes[(loop.index0 + loop.index0 // 4) % sizes|length] %} <!-- Choisir la taille de manière dynamique -->
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {% set patterns = [
+                [
+                    {'row': 1, 'col': 1}, {'row': 1, 'col': 1}, {'row': 1, 'col': 2},
+                    {'row': 2, 'col': 2}, {'row': 1, 'col': 1}, {'row': 1, 'col': 1}
+                ],
+                [
+                    {'row': 2, 'col': 2}, {'row': 1, 'col': 1}, {'row': 1, 'col': 1},
+                    {'row': 1, 'col': 2}, {'row': 1, 'col': 1}, {'row': 1, 'col': 1}
+                ],
+                [
+                    {'row': 1, 'col': 1}, {'row': 1, 'col': 2}, {'row': 2, 'col': 1},
+                    {'row': 1, 'col': 1}, {'row': 1, 'col': 2}, {'row': 1, 'col': 1}
+                ]
+            ] %}
+            
+            {% set pattern = patterns[random(patterns|length - 1)] %}
+            {% set currentOeuvres = oeuvres|slice(0, oeuvres|length) %}
+            
+            {% for i in 0..(currentOeuvres|length - 1) %}
+                {% set oeuvre = currentOeuvres[i] %}
+                {% set patternIndex = i % pattern|length %}
+                {% set size = pattern[patternIndex] %}
                 
-                <div class="relative group bg-slate-800 rounded-lg p-4 flex flex-col justify-between shadow-lg {{ size }}">
+                <div class="relative group bg-slate-800 rounded-lg p-4 flex flex-col justify-between shadow-lg row-span-{{ size.row }} col-span-{{ size.col }}" style="min-height: {{ size.row * 150 }}px">
                     <a href="{{ path('oeuvre_show', {'id': oeuvre.id}) }}" class="absolute inset-0 z-10"></a>
         
                     <h2 class="text-xl font-semibold relative z-20">{{ oeuvre.title }}</h2>
