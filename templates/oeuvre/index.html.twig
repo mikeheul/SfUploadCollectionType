@@ -12,7 +12,43 @@
             </a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <!-- Grille Mobile (affichée uniquement sur mobile) -->
+        <div class="grid grid-cols-1 gap-3 sm:hidden">
+            {% set currentOeuvres = oeuvres|slice(0, oeuvres|length) %}
+            
+            {% for oeuvre in currentOeuvres %}
+                <div class="relative group bg-slate-800 rounded-lg p-4 flex flex-col justify-between shadow-lg" style="min-height: 200px">
+                    <a data-turbo="false" href="{{ path('oeuvre_show', {'id': oeuvre.id}) }}" class="absolute inset-0 z-10"></a>
+
+                    <h2 class="text-xl font-semibold relative z-20">{{ oeuvre.title }}</h2>
+
+                    <span class="absolute flex justify-center items-center text-xs text-white z-20 right-0 top-0 rounded-tr-lg bg-blue-950 w-8 h-8">
+                        {{ oeuvre.images | length }}
+                    </span>
+
+                    <div class="absolute bottom-0 left-0 w-full h-[250px] bg-gradient-to-t from-slate-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-1"></div>
+
+                    <p class="pr-4 line-clamp-3 z-10 text-xs text-slate-300">{{ oeuvre.description }}</p>
+                
+                    <p class="text-white text-xs mb-4 z-10">
+                        {{ oeuvre.creationDate ? oeuvre.creationDate|date('d/m/Y') : 'Non renseignée' }}
+                    </p>
+
+                    <div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition duration-300">
+                        {% if oeuvre.images|length > 0 and oeuvre.images[0].link %}
+                            <img src="{{ asset('/uploads/oeuvres/' ~ oeuvre.images[0].link) }}" 
+                                alt="{{ oeuvre.title }}" 
+                                class="w-full h-full object-cover rounded-lg">
+                        {% endif %}
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-gray-600 col-span-full">Aucune œuvre trouvée.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Grille Bento (affichée uniquement sur tablette/desktop) -->
+        <div class="hidden sm:grid sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {% set patterns = [
                 [
                     {'row': 1, 'col': 1}, {'row': 1, 'col': 1}, {'row': 1, 'col': 2},
@@ -37,21 +73,23 @@
                 {% set size = pattern[patternIndex] %}
                 {% set min_height = size.row * 150 %}
                 
-                <div class="relative group bg-slate-800 rounded-lg p-4 flex flex-col justify-between shadow-lg row-span-{{ size.row }} col-span-{{ size.col }}" style="min-height: 200px">
+                <div class="relative group bg-slate-800 rounded-lg p-4 flex flex-col justify-between shadow-lg row-span-{{ size.row }} col-span-{{ size.col }}" style="min-height: {{ size.row > 1 ? min_height : 200 }}px">
                     <a data-turbo="false" href="{{ path('oeuvre_show', {'id': oeuvre.id}) }}" class="absolute inset-0 z-10"></a>
-        
+
                     <h2 class="text-xl font-semibold relative z-20">{{ oeuvre.title }}</h2>
 
                     <span class="absolute flex justify-center items-center text-xs text-white z-20 right-0 top-0 rounded-tr-lg bg-blue-950 w-8 h-8">
                         {{ oeuvre.images | length }}
                     </span>
-        
+
                     <div class="absolute bottom-0 left-0 w-full h-[250px] bg-gradient-to-t from-slate-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-1"></div>
+
+                    <p class="pr-4 line-clamp-3 z-10 text-xs text-slate-300">{{ oeuvre.description }}</p>
                 
                     <p class="text-white text-xs mb-4 z-10">
                         {{ oeuvre.creationDate ? oeuvre.creationDate|date('d/m/Y') : 'Non renseignée' }}
                     </p>
-        
+
                     <div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition duration-300">
                         {% if oeuvre.images|length > 0 and oeuvre.images[0].link %}
                             <img src="{{ asset('/uploads/oeuvres/' ~ oeuvre.images[0].link) }}" 
