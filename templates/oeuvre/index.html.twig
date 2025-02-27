@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Liste des oeuvres{% endblock %}
+
 {% block body %}
     <div class="max-w-6xl mx-auto py-10 px-4">
         <h1 class="text-3xl font-bold mb-6">Liste des œuvres</h1>
@@ -13,7 +15,9 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {% for oeuvre in oeuvres %}
                 <div class="bg-slate-800 rounded-md p-6">
-                    <h2 class="text-xl font-semibold">{{ oeuvre.title }}</h2>
+                    <a href="{{ path('oeuvre_show', {'id': oeuvre.id}) }}">
+                        <h2 class="text-xl font-semibold">{{ oeuvre.title }}</h2>
+                    </a>
                     <p class="text-gray-500 text-sm mb-4">
                         <strong>Date de création :</strong> 
                         {{ oeuvre.creationDate ? oeuvre.creationDate|date('d/m/Y') : 'Non renseignée' }}

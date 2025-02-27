@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class OeuvreType extends AbstractType
@@ -18,6 +19,12 @@ class OeuvreType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Titre de l\'oeuvre',
+            ])
+            ->add('description', TextareaType::class, [
+                'label' => 'Description de l\'oeuvre',
+                'attr' => [
+                    'rows' => 8,
+                ],
             ])
             ->add('images', CollectionType::class, [
                 'entry_type' => ImageType::class,

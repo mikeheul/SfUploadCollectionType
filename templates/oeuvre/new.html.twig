@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Créer une oeuvre{% endblock %}
+
 {% block body %}
     <div class="max-w-6xl mx-auto py-10 px-4">
         <h1 class="text-3xl font-bold mb-6">Créer une œuvre</h1>
@@ -9,6 +11,11 @@
             <div>
                 {{ form_label(form.title, null, {'label_attr': {'class': 'block font-medium'}}) }}
                 {{ form_widget(form.title, {'attr': {'class': 'w-full p-2 bg-slate-800 mt-2 rounded-lg'}}) }}
+            </div>
+
+            <div>
+                {{ form_label(form.description, null, {'label_attr': {'class': 'block font-medium'}}) }}
+                {{ form_widget(form.description, {'attr': {'class': 'w-full p-2 bg-slate-800 mt-2 rounded-lg resize-none h-32'}}) }}
             </div>
 
             <div id="images-wrapper" 
