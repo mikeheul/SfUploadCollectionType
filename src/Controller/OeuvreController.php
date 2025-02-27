@@ -74,11 +74,14 @@ final class OeuvreController extends AbstractController
 
             // Gérer la suppression des images
             foreach ($oeuvre->getImages() as $image) {
+
                 if ($image->getRemove()) {
                     // Supprimer l'image du disque
                     $filePath = $uploadDir . '/' . $image->getLink();
+
                     if (file_exists($filePath)) {
-                        $filesystem->remove($filePath);
+                        // $filesystem->remove($filePath);
+                        unlink($filePath);
                     }
 
                     // Supprimer l'image de la base de données

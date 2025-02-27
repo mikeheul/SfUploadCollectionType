@@ -44,11 +44,14 @@ class ImageType extends AbstractType
                     'class' => 'mb-4',
                 ],
             ])
-            // ->add('remove', CheckboxType::class, [
-            //     'label' => 'Supprimer cette image',
-            //     'required' => false,
-            //     'mapped' => false, // Pas de liaison à l'entité Image
-            // ])
+            ->add('remove', CheckboxType::class, [
+                'label' => 'Supprimer cette image',
+                'required' => false,
+                'mapped' => false, // Pas de liaison à l'entité Image
+                'row_attr' => [
+                    'class' => 'hidden',
+                ],
+            ])
             ;
     }
 

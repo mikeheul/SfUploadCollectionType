@@ -19,19 +19,19 @@
                 {% for image in oeuvre.images %}
                     <div class="swiper-slide">
                         {% if image.link %}
-                            <img src="{{ asset('/uploads/oeuvres/' ~ image.link) }}" class="w-full h-auto object-cover rounded-lg shadow-lg" alt="{{ image.title }}">
+                            <img src="{{ asset('/uploads/oeuvres/' ~ image.link) }}" class="w-full image-slider h-60 object-cover rounded-lg shadow-lg" alt="{{ image.title }}">
                         {% else %}
                             <p>Aucune image disponible</p>
                         {% endif %}
                     </div>
                 {% endfor %}
             </div>
-
+            
             <!-- Navigation buttons -->
-            <div class="swiper-button-next absolute top-1/2 right-0 transform -translate-y-1/2 text-white p-2">
+            <div class="swiper-button-next absolute top-1/4 right-0 transform -translate-y-1/4 text-white p-2">
                 <span class="sr-only">Next</span>
             </div>
-            <div class="swiper-button-prev absolute top-1/2 left-0 transform -translate-y-1/2 text-white p-2">
+            <div class="swiper-button-prev absolute top-1/4 left-0 transform -translate-y-1/4 text-white p-2">
                 <span class="sr-only">Previous</span>
             </div>
         </div>
@@ -44,7 +44,6 @@
                 loop: true,  // Permet la boucle infinie
                 preloadImages: true,
                 spaceBetween: 5,
-                slidesPerView: 2,
                 autoplay: {
                     delay: 2500,  // Délai entre chaque transition
                     disableOnInteraction: false,
@@ -60,6 +59,21 @@
                 // Ajoute un effet de transition fluide
                 speed: 600,  // Temps de transition entre les slides
                 effect: 'slide',  // Effet de transition
+
+                breakpoints: {
+                    // Quand l'écran est inférieur ou égal à 768px (mobile/tablette)
+                    768: {
+                        slidesPerView: 1,  // 1 image à la fois sur mobile
+                    },
+                    // Quand l'écran est supérieur à 768px (tablette ou plus)
+                    1024: {
+                        slidesPerView: 2,  // Affiche 2 images sur tablette ou plus
+                    },
+                    // Pour les grands écrans (bureau par exemple)
+                    1200: {
+                        slidesPerView: 3,  // Affiche 3 images sur bureau
+                    },
+                },
             });
 
             // Réinitialiser la position pour s'assurer qu'il commence bien à la première image

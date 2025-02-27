@@ -38,7 +38,7 @@
                         {% endif %}
 
                         {# Ajouter un champ caché pour marquer l'image comme supprimée #}
-                        <input type="checkbox" name="{{ image.vars.name }}[remove]" value="1" class="remove-checkbox hidden">
+                        {{ form_widget(image.remove, {'attr': {'class': 'remove-checkbox hidden'}}) }}
 
                         <button type="button" class="remove-image mt-3 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
                             Supprimer
@@ -51,7 +51,7 @@
                 Ajouter une image
             </button>
 
-            <button type="submit" class="mt-6 w-full bg-cyan-700 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+            <button type="submit" class="mt-6 w-full bg-cyan-700 text-white px-4 py-2 rounded-lg hover:bg-cyan-800">
                 Enregistrer
             </button>
 
@@ -63,38 +63,64 @@
             let collectionHolder = document.querySelector('#images-wrapper');
             let addImageButton = document.getElementById('add-image');
             let prototype = collectionHolder.dataset.prototype;
-
+        
             if (!prototype) {
                 console.error("Prototype non défini. Vérifiez que le formulaire contient bien un champ CollectionType.");
                 return;
             }
-
+        
             addImageButton.addEventListener('click', function () {
                 let index = collectionHolder.querySelectorAll('.image-block').length;
                 let newForm = prototype.replace(/__name__/g, index);
                 let div = document.createElement('div');
                 div.classList.add('image-block', 'p-4', 'bg-slate-700', 'mt-2', 'rounded-lg', 'shadow-sm');
                 div.innerHTML = newForm;
-
+        
                 let removeButton = document.createElement('button');
                 removeButton.type = 'button';
                 removeButton.classList.add('remove-image', 'mt-3', 'bg-red-500', 'text-white', 'px-3', 'py-1', 'rounded', 'hover:bg-red-600');
                 removeButton.textContent = 'Supprimer';
                 removeButton.addEventListener('click', function () {
+                    let checkbox = div.querySelector('input[type="checkbox"]'); // Sélectionner la case à cocher associée
+                    checkbox.checked = true; // Cochez la case pour marquer l'image comme supprimée
+                    let imageId = div.querySelector('input[name$="[id]"]').value; // Récupérer l'ID de l'image
+                    let removeField = div.querySelector('input[name$="[remove]"]'); // Récupérer le champ remove
+                    
+                    // Si le champ remove n'existe pas déjà, le créer
+                    if (!removeField) {
+                        removeField = document.createElement('input');
+                        removeField.type = 'hidden';
+                        removeField.name = 'oeuvre[images][__name__][remove]';
+                        removeField.value = '1'; // Set remove à 1 pour marquer l'image comme supprimée
+                        div.appendChild(removeField);
+                    }
+        
+                    // Supprimer l'image de l'affichage
                     div.remove();
                 });
-
+        
                 div.appendChild(removeButton);
                 collectionHolder.appendChild(div);
             });
-
+        
             collectionHolder.addEventListener('click', function (e) {
                 if (e.target.classList.contains('remove-image')) {
-                    let checkbox = e.target.previousElementSibling; // Récupérer la case à cocher associée à l'image
-                    checkbox.checked = true; // Cocher la case pour marquer l'image comme supprimée
-                    e.target.closest('.image-block').remove();
+                    let checkbox = e.target.closest('.image-block').querySelector('input[type="checkbox"]');
+                    checkbox.checked = true; // Cochez la case pour marquer l'image comme supprimée
+                    let removeField = e.target.closest('.image-block').querySelector('input[name$="[remove]"]');
+                    
+                    // Créez un champ hidden si il n'existe pas déjà pour marquer l'image comme supprimée
+                    if (!removeField) {
+                        removeField = document.createElement('input');
+                        removeField.type = 'hidden';
+                        removeField.name = 'oeuvre[images][__name__][remove]';
+                        removeField.value = '1';
+                        e.target.closest('.image-block').appendChild(removeField);
+                    }
+        
+                    e.target.closest('.image-block').remove(); // Supprimer l'image de l'affichage
                 }
             });
-        });
+        });          
     </script>
 {% endblock %}
