@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+* {
+    font-family: "Roboto Mono", serif;
+    /* font-family: "Merriweather", serif; */
+}
