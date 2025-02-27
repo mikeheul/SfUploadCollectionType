@@ -42,12 +42,13 @@
         
                     <h2 class="text-xl font-semibold relative z-20">{{ oeuvre.title }}</h2>
 
-                    <span class="absolute flex justify-center items-center text-xs text-white z-20 right-0 top-0 rounded-tr-lg bg-blue-900 w-8 h-8">
+                    <span class="absolute flex justify-center items-center text-xs text-white z-20 right-0 top-0 rounded-tr-lg bg-blue-950 w-8 h-8">
                         {{ oeuvre.images | length }}
                     </span>
         
-                    <p class="text-gray-200 text-sm mb-4">
-                        <strong>Date de création :</strong>
+                    <div class="absolute bottom-0 left-0 w-full h-[250px] bg-gradient-to-t from-slate-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-1"></div>
+                
+                    <p class="text-white text-xs mb-4 z-10">
                         {{ oeuvre.creationDate ? oeuvre.creationDate|date('d/m/Y') : 'Non renseignée' }}
                     </p>
         
