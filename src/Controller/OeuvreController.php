@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class OeuvreController extends AbstractController
 {
-    #[Route('/oeuvre', name: 'app_oeuvre')]
+    #[Route('/oeuvre', name: 'oeuvre_index')]
     public function index(OeuvreRepository $or): Response
     {
         $oeuvres = $or->findAll();
@@ -55,7 +55,7 @@ final class OeuvreController extends AbstractController
             $entityManager->persist($oeuvre);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_oeuvre');
+            return $this->redirectToRoute('oeuvre_index');
         }
 
         return $this->render('oeuvre/new.html.twig', [

@@ -18,7 +18,30 @@
         {% endblock %}
     </head>
     <body>
-        <main class="min-h-screen bg-slate-900 text-white">
+        <header class="bg-slate-800 text-white shadow-md">
+            <div class="max-w-6xl mx-auto flex justify-between items-center py-4 px-6">
+                <a href="" class="text-2xl font-bold tracking-wide">
+                    Oeuvres
+                </a>
+        
+                <nav>
+                    <ul class="flex space-x-6">
+                        <li>
+                            <a href="{{ path('oeuvre_index') }}" class="hover:text-cyan-400 transition-colors">
+                                Liste des œuvres
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('oeuvre_new') }}" class="hover:text-cyan-400 transition-colors">
+                                Ajouter une œuvre
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        
+        <main class="min-h-screen bg-slate-900 text-white px-4">
             {% block body %}{% endblock %}
         </main>
     </body>
