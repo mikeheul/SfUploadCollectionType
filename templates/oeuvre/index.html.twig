@@ -12,34 +12,37 @@
             </a>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {# <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[150px]"> #}
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[150px] grid-auto-fill">
             {% for oeuvre in oeuvres %}
-                <div class="bg-slate-800 rounded-md p-6">
+                {% set sizes = [
+                    'row-span-1 col-span-1', 
+                    'row-span-2 col-span-1', 
+                    'row-span-1 col-span-2', 
+                    'row-span-2 col-span-2'
+                ] %}
+                {% set size = sizes[(loop.index0 + loop.index0 // 4) % sizes|length] %} <!-- Choisir la taille de manière dynamique -->
+                
+                <div class="relative group bg-slate-800 rounded-lg p-4 flex flex-col justify-between shadow-lg {{ size }}">
                     <a href="{{ path('oeuvre_show', {'id': oeuvre.id}) }}" class="absolute inset-0 z-10"></a>
-
+        
                     <h2 class="text-xl font-semibold relative z-20">{{ oeuvre.title }}</h2>
-
-                    <p class="text-gray-500 text-sm mb-4">
-                        <strong>Date de création :</strong> 
+        
+                    <p class="text-gray-200 text-sm mb-4">
+                        <strong>Date de création :</strong>
                         {{ oeuvre.creationDate ? oeuvre.creationDate|date('d/m/Y') : 'Non renseignée' }}
                     </p>
-
-                    <div class="flex gap-3 flex-wrap">
-                        {% for image in oeuvre.images %}
-                            <div class="relative">
-                                {% if image.link %}
-                                    <img src="{{ asset('/uploads/oeuvres/' ~ image.link) }}" 
-                                        alt="{{ image.title }}"
-                                        class="w-32 h-32 object-cover rounded-lg shadow-sm">
-                                {% else %}
-                                    <p class="text-gray-400">Aucune image disponible</p>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
+        
+                    <div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition duration-300">
+                        {% if oeuvre.images|length > 0 and oeuvre.images[0].link %}
+                            <img src="{{ asset('/uploads/oeuvres/' ~ oeuvre.images[0].link) }}" 
+                                alt="{{ oeuvre.title }}" 
+                                class="w-full h-full object-cover rounded-lg">
+                        {% endif %}
                     </div>
                 </div>
             {% else %}
-                <p class="text-gray-600">Aucune œuvre trouvée.</p>
+                <p class="text-gray-600 col-span-full">Aucune œuvre trouvée.</p>
             {% endfor %}
         </div>
     </div>
