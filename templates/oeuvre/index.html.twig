@@ -40,6 +40,10 @@
                     <a href="{{ path('oeuvre_show', {'id': oeuvre.id}) }}" class="absolute inset-0 z-10"></a>
         
                     <h2 class="text-xl font-semibold relative z-20">{{ oeuvre.title }}</h2>
+
+                    <span class="absolute flex justify-center items-center text-xs text-white z-20 right-0 top-0 rounded-tr-lg bg-blue-900 w-8 h-8">
+                        {{ oeuvre.images | length }}
+                    </span>
         
                     <p class="text-gray-200 text-sm mb-4">
                         <strong>Date de création :</strong>
