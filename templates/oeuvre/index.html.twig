@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="max-w-6xl mx-auto py-10 px-4">
+        <h1 class="text-3xl font-bold mb-6">Liste des œuvres</h1>
+
+        <div class="flex mb-6">
+            <a href="{{ path('oeuvre_new') }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                Créer une œuvre
+            </a>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for oeuvre in oeuvres %}
+                <div class="bg-slate-800 rounded-md p-6">
+                    <h2 class="text-xl font-semibold">{{ oeuvre.title }}</h2>
+                    <p class="text-gray-500 text-sm mb-4">
+                        <strong>Date de création :</strong> 
+                        {{ oeuvre.creationDate ? oeuvre.creationDate|date('d/m/Y') : 'Non renseignée' }}
+                    </p>
+
+                    <div class="flex gap-3 flex-wrap">
+                        {% for image in oeuvre.images %}
+                            <div class="relative">
+                                {% if image.link %}
+                                    <img src="{{ asset('/uploads/oeuvres/' ~ image.link) }}" 
+                                        alt="{{ image.title }}"
+                                        class="w-32 h-32 object-cover rounded-lg shadow-sm">
+                                {% else %}
+                                    <p class="text-gray-400">Aucune image disponible</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-gray-600">Aucune œuvre trouvée.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
