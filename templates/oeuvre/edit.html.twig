@@ -81,8 +81,9 @@
                 removeButton.classList.add('remove-image', 'mt-3', 'bg-red-500', 'text-white', 'px-3', 'py-1', 'rounded', 'hover:bg-red-600');
                 removeButton.textContent = 'Supprimer';
                 removeButton.addEventListener('click', function () {        
-                    // Supprimer l'image de l'affichage
-                    div.remove();
+                    if (confirm('Voulez-vous vraiment supprimer cette image ?')) {
+                        div.remove();
+                    }
                 });
         
                 div.appendChild(removeButton);
@@ -92,8 +93,9 @@
             collectionHolder.addEventListener('click', function (e) {
                 if (e.target.classList.contains('remove-image')) {
                     let removeField = e.target.closest('.image-block').querySelector('input[name$="[remove]"]');
-    
-                    e.target.closest('.image-block').remove(); 
+                    if (confirm('Voulez-vous vraiment supprimer cette image ?')) {
+                        e.target.closest('.image-block').remove(); 
+                    }
                 }
             });
         });          

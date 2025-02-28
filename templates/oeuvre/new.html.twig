@@ -71,7 +71,11 @@
         
             addImageButton.addEventListener('click', function () {
                 let index = collectionHolder.querySelectorAll('.image-block').length;
-                let newForm = prototype.replace(/__name__/g, index);
+                let tempDiv = document.createElement('div');
+                tempDiv.innerHTML = prototype.replace(/__name__/g, index);
+                let newForm = tempDiv.firstElementChild; 
+
+                //let newForm = prototype.replace(/__name__/g, index);
                 let div = document.createElement('div');
                 div.classList.add('image-block', 'p-4', 'bg-slate-700', 'mt-2', 'rounded-lg', 'shadow-sm');
                 div.innerHTML = newForm;
@@ -81,7 +85,9 @@
                 removeButton.classList.add('remove-image', 'mt-3', 'bg-red-500', 'text-white', 'px-3', 'py-1', 'rounded', 'hover:bg-red-600');
                 removeButton.textContent = 'Supprimer';
                 removeButton.addEventListener('click', function () {
-                    div.remove();
+                    if (confirm('Voulez-vous vraiment supprimer cette image ?')) {
+                        div.remove();
+                    }
                 });
         
                 div.appendChild(removeButton);
