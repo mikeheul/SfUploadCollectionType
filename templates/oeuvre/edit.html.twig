@@ -80,10 +80,7 @@
                 removeButton.type = 'button';
                 removeButton.classList.add('remove-image', 'mt-3', 'bg-red-500', 'text-white', 'px-3', 'py-1', 'rounded', 'hover:bg-red-600');
                 removeButton.textContent = 'Supprimer';
-                removeButton.addEventListener('click', function () {
-                    let imageId = div.querySelector('input[name$="[id]"]').value; // Récupérer l'ID de l'image
-                    let removeField = div.querySelector('input[name$="[remove]"]'); // Récupérer le champ remove
-        
+                removeButton.addEventListener('click', function () {        
                     // Supprimer l'image de l'affichage
                     div.remove();
                 });
