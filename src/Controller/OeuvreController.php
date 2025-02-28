@@ -10,6 +10,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -68,30 +69,30 @@ final class OeuvreController extends AbstractController
     {
         $form = $this->createForm(OeuvreType::class, $oeuvre);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads/oeuvres';
-
+            
             // Gérer la suppression des images
             foreach ($oeuvre->getImages() as $image) {
-
+                
                 if ($image->getRemove()) {
                     // Supprimer l'image du disque
                     $filePath = $uploadDir . '/' . $image->getLink();
-
+                    
                     if (file_exists($filePath)) {
                         // $filesystem->remove($filePath);
                         unlink($filePath);
                     }
-
+                    
                     // Supprimer l'image de la base de données
                     $oeuvre->removeImage($image);
                 }
             }
-
+            
             // Gérer l'ajout de nouvelles images
             $images = $form->get('images')->getData(); // Récupérer les images soumises dans le formulaire
-
+            
             foreach ($images as $index => $image) {
                 $file = $form->get('images')[$index]->get('file')->getData(); // Accéder au champ `file` pour chaque image
 
@@ -106,6 +107,7 @@ final class OeuvreController extends AbstractController
                 }
             }
 
+
             // Sauvegarder l'œuvre modifiée
             $em->persist($oeuvre);
             $em->flush();
@@ -117,6 +119,28 @@ final class OeuvreController extends AbstractController
             'form' => $form->createView(),
             'oeuvre' => $oeuvre,
         ]);
+    }
+
+    #[Route('/oeuvre/image/{imageId}/delete', name: 'oeuvre_image_delete', methods: ['POST'])]
+    public function deleteImage(int $imageId, EntityManagerInterface $em, Filesystem $filesystem): JsonResponse
+    {
+        $image = $em->getRepository(Image::class)->find($imageId);
+        if (!$image) {
+            return new JsonResponse(['message' => 'Image non trouvée'], Response::HTTP_NOT_FOUND);
+        }
+
+        $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads/oeuvres';
+        $filePath = $uploadDir . '/' . $image->getLink();
+
+        if (file_exists($filePath)) {
+            unlink($filePath); // Supprimer le fichier physique
+        }
+
+        // Supprimer l'image de la base de données
+        $em->remove($image);
+        $em->flush();
+
+        return new JsonResponse(['message' => 'Image supprimée avec succès']);
     }
 
 

@@ -6,7 +6,7 @@
     <div class="max-w-6xl mx-auto py-10 px-4">
         <h1 class="text-3xl font-bold mb-6">Éditer une œuvre</h1>
 
-        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data', 'class': 'space-y-4'}}) }}
+        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data', 'class': 'space-y-4', 'data-turbo': 'false'}}) }}
 
             <div>
                 {{ form_label(form.title, null, {'label_attr': {'class': 'block font-medium'}}) }}
@@ -36,9 +36,6 @@
                         {% if image.vars.data.link %}
                             <img src="{{ asset('/uploads/oeuvres/' ~ image.vars.data.link) }}" class="mt-3 w-32 h-32 object-cover rounded-lg shadow-md">
                         {% endif %}
-
-                        {# Ajouter un champ caché pour marquer l'image comme supprimée #}
-                        {{ form_widget(image.remove, {'attr': {'class': 'remove-checkbox hidden'}}) }}
 
                         <button type="button" class="remove-image mt-3 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
                             Supprimer
@@ -84,19 +81,8 @@
                 removeButton.classList.add('remove-image', 'mt-3', 'bg-red-500', 'text-white', 'px-3', 'py-1', 'rounded', 'hover:bg-red-600');
                 removeButton.textContent = 'Supprimer';
                 removeButton.addEventListener('click', function () {
-                    let checkbox = div.querySelector('input[type="checkbox"]'); // Sélectionner la case à cocher associée
-                    checkbox.checked = true; // Cochez la case pour marquer l'image comme supprimée
                     let imageId = div.querySelector('input[name$="[id]"]').value; // Récupérer l'ID de l'image
                     let removeField = div.querySelector('input[name$="[remove]"]'); // Récupérer le champ remove
-                    
-                    // Si le champ remove n'existe pas déjà, le créer
-                    if (!removeField) {
-                        removeField = document.createElement('input');
-                        removeField.type = 'hidden';
-                        removeField.name = 'oeuvre[images][__name__][remove]';
-                        removeField.value = '1'; // Set remove à 1 pour marquer l'image comme supprimée
-                        div.appendChild(removeField);
-                    }
         
                     // Supprimer l'image de l'affichage
                     div.remove();
@@ -108,20 +94,9 @@
         
             collectionHolder.addEventListener('click', function (e) {
                 if (e.target.classList.contains('remove-image')) {
-                    let checkbox = e.target.closest('.image-block').querySelector('input[type="checkbox"]');
-                    checkbox.checked = true; // Cochez la case pour marquer l'image comme supprimée
                     let removeField = e.target.closest('.image-block').querySelector('input[name$="[remove]"]');
-                    
-                    // Créez un champ hidden si il n'existe pas déjà pour marquer l'image comme supprimée
-                    if (!removeField) {
-                        removeField = document.createElement('input');
-                        removeField.type = 'hidden';
-                        removeField.name = 'oeuvre[images][__name__][remove]';
-                        removeField.value = '1';
-                        e.target.closest('.image-block').appendChild(removeField);
-                    }
-        
-                    e.target.closest('.image-block').remove(); // Supprimer l'image de l'affichage
+    
+                    e.target.closest('.image-block').remove(); 
                 }
             });
         });          

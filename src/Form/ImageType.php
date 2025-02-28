@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class ImageType extends AbstractType
@@ -44,14 +45,14 @@ class ImageType extends AbstractType
                     'class' => 'mb-4',
                 ],
             ])
-            ->add('remove', CheckboxType::class, [
-                'label' => 'Supprimer cette image',
-                'required' => false,
-                'mapped' => false, // Pas de liaison à l'entité Image
-                'row_attr' => [
-                    'class' => 'hidden',
-                ],
-            ])
+            // ->add('remove', CheckboxType::class, [
+            //     'label' => 'Supprimer cette image',
+            //     'required' => false,
+            //     // 'mapped' => false, 
+            //     'row_attr' => [
+            //         'class' => 'hidden',
+            //     ],
+            // ])
             ;
     }
 
