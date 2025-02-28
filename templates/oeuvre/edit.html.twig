@@ -37,7 +37,16 @@
                             <img src="{{ asset('/uploads/oeuvres/' ~ image.vars.data.link) }}" class="mt-3 w-32 h-32 object-cover rounded-lg shadow-md">
                         {% endif %}
 
-                        <button type="button" class="remove-image mt-3 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
+                        <div class="mt-2 hidden">
+                            {{ form_label(image.remove, null, {'label_attr': {'class': 'block font-medium'}}) }}
+                            {{ form_widget(image.remove, {'attr': {'class': 'w-full p-2 mt-2 rounded-lg', 'id': 'remove-checkbox-' ~ loop.index}}) }}
+                        </div>
+
+                        <button 
+                            type="button" 
+                            class="remove-image mt-3 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600" 
+                            data-remove-checkbox="remove-checkbox-{{ loop.index }}"
+                        >
                             Supprimer
                         </button>
                     </div>
@@ -89,13 +98,30 @@
                 div.appendChild(removeButton);
                 collectionHolder.appendChild(div);
             });
-        
+
             collectionHolder.addEventListener('click', function (e) {
                 if (e.target.classList.contains('remove-image')) {
-                    let removeField = e.target.closest('.image-block').querySelector('input[name$="[remove]"]');
-                    if (confirm('Voulez-vous vraiment supprimer cette image ?')) {
-                        e.target.closest('.image-block').remove(); 
+                    // Trouver l'élément parent qui contient l'image
+                    let imageBlock = e.target.closest('.image-block');
+
+                    // Vérifier l'index de l'élément dans le collectionHolder
+                    let index = Array.from(collectionHolder.children).indexOf(imageBlock);
+                    console.log('Index de l\'élément:', index);
+
+                    // Utilisez l'index pour construire l'ID de la checkbox
+                    let removeCheckbox = document.getElementById(`oeuvre_images_${index}_remove`);
+                    console.log(removeCheckbox); // Vérifiez si la case à cocher est récupérée
+
+                    // Si la case à cocher existe, on la coche
+                    if (removeCheckbox) {
+                        removeCheckbox.checked = true;
+                    } else {
+                        console.error("La case à cocher n'a pas été trouvée.");
                     }
+
+                    // Optionnel : supprimer l'élément si besoin
+                    //imageBlock.style.display = 'none';
+                    imageBlock.remove();
                 }
             });
         });          
