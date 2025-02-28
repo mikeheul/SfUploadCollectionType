@@ -20,7 +20,7 @@
 
             <div id="images-wrapper" 
                     class="space-y-4" 
-                    data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
+                    data-prototype="{{ form_row(form.images.vars.prototype)|e('html_attr') }}">
                 {% for image in form.images %}
                     <div class="image-block p-4 rounded-lg">
                         <div>
